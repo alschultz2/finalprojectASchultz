@@ -8,15 +8,15 @@ def home():
 
 @app.route('/register')
 def register():
-    return 'Register Page'
+    return render_template('register.html')
 
 @app.route('/login')
 def login():
-    return 'Login Page'
+    return render_template('login.html')
 
 @app.route('/tracker')
 def tracker():
-    return 'Time Tracker Page'
+    return render_template('tracker.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -12,7 +12,21 @@
         <a href="/login">Login</a>
         <a href="/tracker">Time Tracker</a>
     </div>
-    <h2>Login Page</h2>
-    <!-- Login form or content goes here -->
+
+    <div class="form-container">
+        <form method="POST" action="{{ url_for('login') }}">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

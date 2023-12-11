@@ -10,11 +10,13 @@
         <a href="/">Home</a>
         <a href="/register">Register</a>
         <a href="/login">Login</a>
+        <a href="/usernames">Usernames</a>
         <a href="/tracker">Time Tracker</a>
     </div>
 
     <div class="form-container">
         <form method="POST" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -22,6 +24,10 @@
             <div>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="confirm">Confirm Password:</label>
+                <input type="password" id="confirm" name="confirm" required>
             </div>
             <div>
                 <input type="submit" value="Register">

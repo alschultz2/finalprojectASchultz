@@ -8,10 +8,13 @@
     <h1>Time Tracker</h1>
     <div class="navbar">
         <a href="/">Home</a>
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
-        <a href="/usernames">Usernames</a>
-        <a href="/tracker">Time Tracker</a>
-    </div>
-</body>
+        {% if 'user_id' in session %}
+            <a href="/tracker">Time Tracker</a>
+            <a href="/usernames">Usernames</a>
+            <a href="/logout">Log Out</a>
+        {% else %}
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        {% endif %}
+    </div></body>
 </html>

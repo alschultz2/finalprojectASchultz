@@ -51,3 +51,9 @@ body {
 .manager-list h2, .normal-user-list h2 {
     text-align: center;
 }
+
+.time-entries .entry {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+}

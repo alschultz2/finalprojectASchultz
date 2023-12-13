@@ -59,13 +59,28 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
-@app.route('/tracker')
+@app.route('/tracker', methods=['GET', 'POST'])
 def tracker():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
-    # Placeholder for time tracker page logic
-    return render_template('tracker.html')
+    if request.method == 'POST':
+        date = request.form['date']
+        task_name = request.form['task_name']
+        start_time = request.form['start_time']
+        end_time = request.form['end_time']
+
+        db = get_db()
+        db.execute('INSERT INTO time_entry (user_id, date, task_name, start_time, end_time) VALUES (?, ?, ?, ?, ?)',
+                   (session['user_id'], date, task_name, start_time, end_time))
+        db.commit()
+        close_db()
+
+    db = get_db()
+    entries = db.execute('SELECT * FROM time_entry WHERE user_id = ?', (session['user_id'],)).fetchall()
+    close_db()
+
+    return render_template('tracker.html', entries=entries)
 
 @app.route('/usernames')
 def show_usernames():

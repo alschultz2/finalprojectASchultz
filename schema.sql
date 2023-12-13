@@ -1,6 +1,9 @@
-CREATE TABLE IF NOT EXISTS user (
+CREATE TABLE IF NOT EXISTS time_entry (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    is_manager BOOLEAN DEFAULT FALSE
+    user_id INTEGER NOT NULL,
+    date TEXT NOT NULL,
+    task_name TEXT NOT NULL,
+    start_time TEXT NOT NULL,
+    end_time TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );

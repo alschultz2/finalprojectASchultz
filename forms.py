@@ -8,6 +8,7 @@ class RegistrationForm(FlaskForm):
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
+    manager_code = StringField('Manager Code (optional)')  # Add this line
 
 class LoginForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=4, max=25)])

@@ -6,14 +6,7 @@
 </head>
 <body>
     <h1>Time Tracker</h1>
-    <div class="navbar">
-        <a href="/">Home</a>
-        {% if 'user_id' not in session %}
-            <a href="/register">Register</a>
-            <a href="/login">Login</a>
-        {% endif %}
-    </div>
-
+    {% include 'navbar.html' %}
     <div class="form-container">
         <form method="POST" action="{{ url_for('register') }}">
             {{ form.hidden_tag() }}
@@ -28,6 +21,10 @@
             <div>
                 <label for="confirm">Confirm Password:</label>
                 <input type="password" id="confirm" name="confirm" required>
+            </div>
+            <div>
+                <label for="manager_code">Manager Code:</label>
+                <input type="text" id="manager_code" name="manager_code">
             </div>
             <div>
                 <input type="submit" value="Register">

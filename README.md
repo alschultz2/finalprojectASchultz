@@ -30,3 +30,10 @@ Below the command that you enter, you will see in blue hypertext:
 http://127.0.0.1:5000
 ```
 By clicking on it the program will open a webpage for the project.
+
+## Database Error
+If you decide to update or edit the database, then you will need to reinitialize it. 
+In a terminal window, please type the following:
+```
+python db.py
+```

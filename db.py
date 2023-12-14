@@ -2,15 +2,13 @@ import sqlite3
 from flask import Flask, g
 import os
 
-# Create a Flask app instance for the database context
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'database.db')
-
+# Above is what determines the base directory
 def get_db():
-    """Open a new database connection if there is none yet for the
-    current application context."""
+    """Open a new database connection if there is none yet for the current application context."""
     if 'db' not in g:
         g.db = sqlite3.connect(
             DATABASE,
@@ -38,6 +36,6 @@ def init_db_app_context():
         init_db()
 
 if __name__ == '__main__':
-    # This allows for manual database initialization
     init_db_app_context()
     print("Database initialized.")
+# When the script is directly it will initialize tha database

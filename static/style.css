@@ -2,6 +2,34 @@ body {
     background-color: #4FB85D;
     text-align: center;
 }
+
+.flash-danger {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.flash-success {
+    color: green;
+    margin-bottom: 10px;
+}
+
+.form-container {
+    margin: 0 auto;
+    width: 300px;
+    padding: 20px;
+    background-color: #6EE17D;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.manager-list, .normal-user-list {
+    width: 45%;
+}
+
+.manager-list h2, .normal-user-list h2 {
+    text-align: center;
+}
+
 .navbar {
     overflow: hidden;
     background-color: #333;
@@ -19,41 +47,14 @@ body {
     color: black;
 }
 
-.form-container {
-    margin: 0 auto;
-    width: 300px;
-    padding: 20px;
-    background-color: #6EE17D;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.flash-success {
-    color: green;
+.time-entries .entry {
     margin-bottom: 10px;
-}
-
-.flash-danger {
-    color: red;
-    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
 }
 
 .user-list-container {
     display: flex;
     justify-content: space-around;
     padding: 20px;
-}
-
-.manager-list, .normal-user-list {
-    width: 45%;
-}
-
-.manager-list h2, .normal-user-list h2 {
-    text-align: center;
-}
-
-.time-entries .entry {
-    margin-bottom: 10px;
-    padding: 5px;
-    border: 1px solid #ddd;
 }

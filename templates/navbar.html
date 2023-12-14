@@ -1,11 +1,34 @@
-<div class="navbar">
-    <a href="/">Home</a>
-    {% if 'user_id' in session %}
-        <a href="/tracker">Time Tracker</a>
-        <a href="/usernames">Usernames</a>
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
-    {% endif %}
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Time Tracker</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                {% if 'user_id' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tracker">Time Tracker</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usernames">Usernames</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
+                <!-- Above is the nav links, with some of them depending on if the user is a manager or logged in or not-->
+            </ul>
+        </div>
+    </div>
+</nav>

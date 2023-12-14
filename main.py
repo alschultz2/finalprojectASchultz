@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import get_db, close_db
 from forms import RegistrationForm, LoginForm
@@ -19,7 +19,7 @@ def register():
     if request.method == 'POST' and form.validate():
         username = form.username.data
         password = generate_password_hash(form.password.data)
-        is_manager = form.manager_code.data == '3182'  # Check manager code
+        is_manager = form.manager_code.data == '3182'
 
         db = get_db()
         db.execute('INSERT INTO user (username, password, is_manager) VALUES (?, ?, ?)',
@@ -48,12 +48,13 @@ def login():
 
         if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
-            session['is_manager'] = user['is_manager'] == 1  # Store manager status
+            session['is_manager'] = user['is_manager'] == 1
             return redirect(url_for('home'))
         else:
             flash('Invalid username or password.')
 
     return render_template('login.html', form=form)
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -89,12 +90,38 @@ def show_usernames():
         return redirect(url_for('login'))
 
     db = get_db()
-    manager_usernames = db.execute('SELECT username FROM user WHERE is_manager = TRUE').fetchall()
-    normal_usernames = db.execute('SELECT username FROM user WHERE is_manager = FALSE').fetchall()
+    users = db.execute('SELECT id, username FROM user').fetchall()
+    user_time_entries = {}
+    for user in users:
+        user_entries = db.execute('SELECT * FROM time_entry WHERE user_id = ?', (user['id'],)).fetchall()
+        user_time_entries[user['username']] = user_entries
     close_db()
 
-    return render_template('usernames.html', manager_usernames=manager_usernames, normal_usernames=normal_usernames)
+    return render_template('usernames.html', user_time_entries=user_time_entries)
 
+@app.route('/api/time_entries/<int:entry_id>', methods=['PUT'])
+def update_time_entry(entry_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    data = request.json
+    db = get_db()
+    db.execute('UPDATE time_entry SET date=?, task_name=?, start_time=?, end_time=? WHERE id=? AND user_id=?',
+               (data['date'], data['task_name'], data['start_time'], data['end_time'], entry_id, session['user_id']))
+    db.commit()
+    close_db()
+    return jsonify({'message': 'Entry updated successfully'})
+
+@app.route('/api/time_entries/<int:entry_id>', methods=['DELETE'])
+def delete_time_entry(entry_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    db = get_db()
+    db.execute('DELETE FROM time_entry WHERE id=?', (entry_id,))
+    db.commit()
+    close_db()
+    return jsonify({'message': 'Entry deleted successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True)

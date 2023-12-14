@@ -5,25 +5,22 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Registered Usernames</h1>
+    <h1>Registered Usernames and Their Time Entries</h1>
     {% include 'navbar.html' %}
-    <div class="user-list-container">
-        <div class="manager-list">
-            <h2>Managers</h2>
-            <ul>
-                {% for user in manager_usernames %}
-                    <li>{{ user.username }}</li>
+    <div class="user-info">
+        {% for username, entries in user_time_entries.items() %}
+            <h2>{{ username }}</h2>
+            <div class="time-entries">
+                {% for entry in entries %}
+                    <div class="entry">
+                        <p>Date: {{ entry.date }}</p>
+                        <p>Task: {{ entry.task_name }}</p>
+                        <p>Start Time: {{ entry.start_time }}</p>
+                        <p>End Time: {{ entry.end_time }}</p>
+                    </div>
                 {% endfor %}
-            </ul>
-        </div>
-        <div class="normal-user-list">
-            <h2>Normal Users</h2>
-            <ul>
-                {% for user in normal_usernames %}
-                    <li>{{ user.username }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+            </div>
+        {% endfor %}
     </div>
 </body>
 </html>

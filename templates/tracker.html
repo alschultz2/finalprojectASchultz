@@ -14,15 +14,92 @@
         <input type="time" name="end_time" required>
         <input type="submit" value="Log Time">
     </form>
+
+    <!-- Inline Edit Form (Initially Hidden) -->
+    <div id="editForm" style="display:none;">
+        <input type="date" id="editDate">
+        <input type="text" id="editTaskName" placeholder="Task Name">
+        <input type="time" id="editStartTime">
+        <input type="time" id="editEndTime">
+        <button onclick="submitEdit()">Save Changes</button>
+    </div>
+
+    <!-- Time Entries Display -->
     <div class="time-entries">
         {% for entry in entries %}
-            <div class="entry">
-                <p>Date: {{ entry.date }}</p>
-                <p>Task: {{ entry.task_name }}</p>
-                <p>Start Time: {{ entry.start_time }}</p>
-                <p>End Time: {{ entry.end_time }}</p>
+            <div class="entry" id="entry_{{ entry.id }}">
+                <p>Date: <span class="date">{{ entry.date }}</span></p>
+                <p>Task: <span class="taskName">{{ entry.task_name }}</span></p>
+                <p>Start Time: <span class="startTime">{{ entry.start_time }}</span></p>
+                <p>End Time: <span class="endTime">{{ entry.end_time }}</span></p>
+                <button onclick="editEntry({{ entry.id }})">Edit</button>
+                <button onclick="deleteEntry({{ entry.id }})">Delete</button>
             </div>
         {% endfor %}
     </div>
+
+    <script>
+        var currentEditId = null;
+
+        function editEntry(entryId) {
+            var entry = document.getElementById(`entry_${entryId}`);
+            var date = entry.querySelector('.date').innerText;
+            var taskName = entry.querySelector('.taskName').innerText;
+            var startTime = entry.querySelector('.startTime').innerText;
+            var endTime = entry.querySelector('.endTime').innerText;
+
+            document.getElementById('editDate').value = date;
+            document.getElementById('editTaskName').value = taskName;
+            document.getElementById('editStartTime').value = startTime;
+            document.getElementById('editEndTime').value = endTime;
+
+            var editForm = document.getElementById('editForm');
+            entry.after(editForm); // Move the edit form below the current entry
+            editForm.style.display = 'block';
+            currentEditId = entryId;
+        }
+
+        function submitEdit() {
+    var updatedDate = document.getElementById('editDate').value;
+    var updatedTaskName = document.getElementById('editTaskName').value;
+    var updatedStartTime = document.getElementById('editStartTime').value;
+    var updatedEndTime = document.getElementById('editEndTime').value;
+
+    fetch(`/api/time_entries/${currentEditId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            date: updatedDate,
+            task_name: updatedTaskName,
+            start_time: updatedStartTime,
+            end_time: updatedEndTime
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            location.reload(); // Reload the page to update the entry display
+        } else {
+            alert('Error: Could not update entry');
+        }
+    });
+    return false; // Prevent default form submission
+}
+
+
+        function deleteEntry(entryId) {
+            if (confirm('Are you sure you want to delete this entry?')) {
+                fetch(`/api/time_entries/${entryId}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById(`entry_${entryId}`).remove();
+                        } else {
+                            alert('Error: Could not delete entry');
+                        }
+                    });
+            }
+        }
+    </script>
 </body>
 </html>

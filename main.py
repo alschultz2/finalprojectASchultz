@@ -4,11 +4,13 @@ from db import get_db, close_db
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['SECRET_KEY'] = '118472'
+#Secret key... Te-he
 
 @app.route('/')
 def home():
     return render_template('index.html')
+# Defines the route for the homepage
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -31,6 +33,8 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
+"""Defines the route for user registration. it retrives data in the case of the manager code
+Otherwise it inserts a new user into the database"""
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,11 +58,14 @@ def login():
             flash('Invalid username or password.')
 
     return render_template('login.html', form=form)
+"""Defines the route for user login. Validates, retrives, and fetches the users info,
+Also checks the users session"""
 
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home'))
+# Route for logging the user out
 
 @app.route('/tracker', methods=['GET', 'POST'])
 def tracker():
@@ -83,6 +90,8 @@ def tracker():
 
     return render_template('tracker.html', entries=entries)
 
+"""Defines the route for the tracker. etriving, inserting, and
+fetching the data from the database"""
 @app.route('/usernames')
 def show_usernames():
     if 'user_id' not in session or not session.get('is_manager'):
@@ -98,7 +107,7 @@ def show_usernames():
     close_db()
 
     return render_template('usernames.html', user_time_entries=user_time_entries)
-
+# Runs and retirves all of the data entries for the users which can be seen by only managers
 @app.route('/api/time_entries/<int:entry_id>', methods=['PUT'])
 def update_time_entry(entry_id):
     if 'user_id' not in session:
@@ -111,6 +120,7 @@ def update_time_entry(entry_id):
     db.commit()
     close_db()
     return jsonify({'message': 'Entry updated successfully'})
+# Allows the user to update entries in the tracker and send those changes to the database
 
 @app.route('/api/time_entries/<int:entry_id>', methods=['DELETE'])
 def delete_time_entry(entry_id):
@@ -122,6 +132,8 @@ def delete_time_entry(entry_id):
     db.commit()
     close_db()
     return jsonify({'message': 'Entry deleted successfully'})
-
+# Allows the user to delete entries from the tracker and send that change to the database
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
+# For running the app with an option for debug mode
